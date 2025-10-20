@@ -78,10 +78,10 @@ public class GestorAlmacenamiento {
         }
     }
     
-    public static void guardarTabla(List<String> tokens) {
+    public void guardarTabla(List<String> tokens) {
         String nombreTabla = tokens.get(2);
         
-        File carpetaTablas = new File("tablas");
+        File carpetaTablas = new File(directorioTablas);
         if (!carpetaTablas.exists()) {
             carpetaTablas.mkdir();
         }
@@ -96,9 +96,9 @@ public class GestorAlmacenamiento {
         crearArchivoTabla(tokens);
     }
     
-    private static void crearArchivoTabla(List<String> tokens) {
+    private void crearArchivoTabla(List<String> tokens) {
         String nombreTabla = tokens.get(2);
-        String nombreArchivo = "SGBD/tablas/" + nombreTabla + ".txt";
+        String nombreArchivo = directorioTablas+ nombreTabla + ".txt";
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
             bw.write("ESTRUCTURA:");
