@@ -19,6 +19,9 @@ public class GestorAlmacenamiento {
         
         cargarUsuarios();
     }
+    public String getDirTablas(){
+        return directorioTablas;
+    }
     
     private String inicializarDirectorio() {
         File f_directorio = new File(directorio);
@@ -80,19 +83,16 @@ public class GestorAlmacenamiento {
     
     public void guardarTabla(List<String> tokens) {
         String nombreTabla = tokens.get(2);
-        
         File carpetaTablas = new File(directorioTablas);
         if (!carpetaTablas.exists()) {
             carpetaTablas.mkdir();
         }
-        
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("datostabla.txt", true))) {
             bw.write(nombreTabla);
             bw.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         crearArchivoTabla(tokens);
     }
     
@@ -103,10 +103,8 @@ public class GestorAlmacenamiento {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
             bw.write("ESTRUCTURA:");
             bw.newLine();
-            
-            
+    
             List<List<String>> columnas = obtenerListColumnas(tokens);
-
             // Formato: nombre:tipo
             for (List<String> columna : columnas) {
                 String nombreColumna = columna.get(1);
@@ -114,7 +112,6 @@ public class GestorAlmacenamiento {
                 bw.write(nombreColumna + ":" + tipoColumna);
                 bw.newLine();
             }
-            
             bw.newLine();
             bw.write("DATOS:");
             bw.newLine();

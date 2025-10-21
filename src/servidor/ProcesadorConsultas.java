@@ -15,7 +15,7 @@ public class ProcesadorConsultas {
     
     public String procesarConsulta(String consulta){
         List<String> tokens = dividirEnTokens(consulta); 
-        
+
         if (validarSintaxis(tokens)){
             if(validarSemantica(tokens)){
                 return ejecutarConsulta(tokens);
@@ -42,7 +42,6 @@ public class ProcesadorConsultas {
                 tokens.add(parte);
             }
         }
-
         return tokens;
     }
     
@@ -65,7 +64,8 @@ public class ProcesadorConsultas {
                 }
             }
             else if (tokens.size() > 1 && tokens.get(1).equalsIgnoreCase("TABLE")) {
-                if(tokens.size() >= 7){
+                System.out.println(tokens.size());
+                if(tokens.size() >= 5){
                     
                     return tokens.get(0).equalsIgnoreCase("MAKE") &&
                            tokens.get(1).equalsIgnoreCase("TABLE") &&
@@ -171,11 +171,11 @@ public class ProcesadorConsultas {
                 
             }else if (tokens.size() > 1 && tokens.get(1).equalsIgnoreCase("ADD")){
                 return gestor.tablaExistente(tokens.get(2)) && 
-                       !gestor.campoExistente(tokens.get(4), "tablas/"+tokens.get(2)+".txt");
+                       !gestor.campoExistente(tokens.get(4), gestor.getDirTablas()+tokens.get(2)+".txt");
                 
             }else if (tokens.size() > 1 && tokens.get(1).equalsIgnoreCase("CHANGE")){
                 return gestor.tablaExistente(tokens.get(2)) && 
-                       gestor.campoExistente(tokens.get(4), "tablas/"+tokens.get(2)+".txt");
+                       gestor.campoExistente(tokens.get(4), gestor.getDirTablas()+tokens.get(2)+".txt");
                 
             }else {
                 System.out.println("ERROR - Sintaxis invalida despues de ALTER");
@@ -192,7 +192,7 @@ public class ProcesadorConsultas {
             if (tokens.size() > 1 && tokens.get(1).equalsIgnoreCase("USER")){
                 
             }else if (tokens.size() > 1 && tokens.get(1).equalsIgnoreCase("TABLE")) {
-                
+                gestor.guardarTabla(tokens);
             }else {
                 System.out.println("ERROR - Sintaxis invalida despues de MAKE");
             }
@@ -208,8 +208,12 @@ public class ProcesadorConsultas {
         }else if(tokens.get(0).equalsIgnoreCase("ALTER")){
             if (tokens.size() > 1 && tokens.get(1).equalsIgnoreCase("USER")){
             
-            }else if (tokens.size() > 1 && tokens.get(1).equalsIgnoreCase("TABLE")){
+            }else if (tokens.size() > 1 && tokens.get(1).equalsIgnoreCase("ADD")){
+                gestor.addColumn(tokens.get(2), tokens.get(4)+":"+tokens.get(5));
                 
+            }else if (tokens.size() > 1 && tokens.get(1).equalsIgnoreCase("CHANGE")){
+                //gestor.tablaExistente(tokens.get(2)) && 
+                //       gestor.campoExistente(tokens.get(4), gestor.getDirTablas()+tokens.get(2)+".txt");
             } else {
                 System.out.println("ERROR - Sintaxis invalida despues de ALTER");
             }
