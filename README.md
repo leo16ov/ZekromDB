@@ -17,7 +17,7 @@ para clonar el repositorio desde Github a una carpeta en su PC se utiliza el sig
 ```git
 git clone [url del repositorio]
 ```
-En nuestro caso el url del proyecto es https://github.com/PurpleBnnuyStupid/ProyectoBerea.git asi que pegan eso y les descargara el repositorio a una carpeta (dentro de documentos para el ejemplo).
+En nuestro caso el url del proyecto es https://github.com/leo16ov/ZekromDB.git asi que pegan eso y les descargara el repositorio a una carpeta (dentro de documentos para el ejemplo).
 
 **Atencion**
 Es probable que les pida iniciar sesion para clonar el repositorio, inician sesion con su github con acceso al repositorio y todo deberia funcionar sin problemas.
