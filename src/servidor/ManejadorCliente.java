@@ -24,11 +24,13 @@ class ManejadorCliente implements Runnable {
     @Override
     public void run() {
         String IPCliente = socketCliente.getInetAddress().getHostAddress();
+        
         try (BufferedReader entrada = new BufferedReader(
             new InputStreamReader(socketCliente.getInputStream()));
             PrintWriter salida = new PrintWriter(socketCliente.getOutputStream(), true)
         ) {
             String mensajeCliente;
+            
             while ((mensajeCliente = entrada.readLine()) != null) {
                 System.out.println("[" + IPCliente + "] " + mensajeCliente);
                 
