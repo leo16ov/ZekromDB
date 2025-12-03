@@ -17,6 +17,7 @@ public class GestorAlmacenamiento {
         this.usuarios = new HashMap<>();
         inicializarDirectorio();
         cargarUsuarios();
+        crearArchivoConstraints();
     }
     
     private void inicializarDirectorio() {
@@ -55,7 +56,7 @@ public class GestorAlmacenamiento {
             System.err.println("Error cargando usuarios: " + e.getMessage());
         }
     }
-    
+ 
     private void crearArchivoUsuarios() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(directorio + "usuarios.txt"))) {
             writer.println("root,12341234"); // Crea el usuario root
@@ -65,7 +66,41 @@ public class GestorAlmacenamiento {
             System.err.println("Error creando archivo de usuarios: " + e.getMessage());
         }
     }
+    private void crearArchivoConstraints(){
+        try (PrintWriter writer = new PrintWriter(new FileWriter(directorio + "constraints.txt"))) {
+            System.out.println("Archivo de constraints creado: constraints.txt");
+            
+        } catch (IOException e) {
+            System.err.println("Error creando archivo de usuarios: " + e.getMessage());
+        }
+    }
     
+    public boolean agregar_constraint(String tabla, String campo, String nombre, String tipo){
+         try (
+            FileWriter fw = new FileWriter(directorio + "constraints.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw)
+        ) {
+            bw.write(nombre+":"+tipo+"|"+ tabla+":"+ campo +'\n');
+            return true;
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean agregar_constraint(String tabla, String campo, String nombre, String tipo, String tablaRef, String campoRef){
+         try (
+            FileWriter fw = new FileWriter(directorio + "constraints.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw)
+        ) {
+            bw.write(nombre+":"+tipo+"|"+ tabla+":"+ campo +"|"+ tablaRef +":"+campoRef +'\n');
+            return true;
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public boolean buscarUsuario(String username, String password) {
         lockUsuario.readLock().lock();
         try{

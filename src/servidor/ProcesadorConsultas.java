@@ -236,6 +236,105 @@ public class ProcesadorConsultas {
                 gestor.alterTable(tabla, tokens.get(4), tokens.get(6)); 
                 return "OK: Se altero la tabla.";
             }
+        },
+        ALTER_CONSTRAINT_ID{
+            @Override
+            public boolean validarSintaxis(List<String> tokens) {
+                return  tokens.size() >= 7 && 
+                        tokens.get(0).equalsIgnoreCase("ALTER") &&
+                        !tokens.get(1).isEmpty() &&
+                        tokens.get(2).equalsIgnoreCase(".")&&
+                        !tokens.get(3).isEmpty() &&
+                        tokens.get(4).equalsIgnoreCase("CONSTRAINT") &&
+                        !tokens.get(5).isEmpty() &&
+                        tokens.get(6).equalsIgnoreCase("ID");
+            }
+            @Override
+            public boolean validarSemantica(GestorAlmacenamiento gestor, List<String> tokens) {
+                String tabla = tokens.get(1);
+                if(gestor.tablaExistente(tabla)){
+                    return true;
+                } else{
+                    return false;
+                }
+            }
+            @Override
+            public String ejecutar(GestorAlmacenamiento gestor, List<String> tokens) {
+                String tabla = tokens.get(1); 
+                String campo = tokens.get(3);
+                String nombreConstraint = tokens.get(5);
+                String tipoConstraint = tokens.get(6);
+                gestor.agregar_constraint(tabla, campo, nombreConstraint, tipoConstraint); 
+                return "OK: Se altero la tabla.";
+            }
+        },
+        ALTER_CONSTRAINT_REF{
+            @Override
+            public boolean validarSintaxis(List<String> tokens) {
+                return  tokens.size() >= 10 && 
+                        tokens.get(0).equalsIgnoreCase("ALTER") &&
+                        !tokens.get(1).isEmpty() &&
+                        tokens.get(2).equalsIgnoreCase(".")&&
+                        !tokens.get(3).isEmpty() &&
+                        tokens.get(4).equalsIgnoreCase("CONSTRAINT") &&
+                        !tokens.get(5).isEmpty() &&
+                        tokens.get(6).equalsIgnoreCase("REF") &&
+                        !tokens.get(7).isEmpty() &&
+                        tokens.get(8).equalsIgnoreCase(".") &&
+                        !tokens.get(9).isEmpty();
+            }
+            @Override
+            public boolean validarSemantica(GestorAlmacenamiento gestor, List<String> tokens) {
+                String tabla = tokens.get(1);
+                String tablaReferenciada = tokens.get(7);
+                if(gestor.tablaExistente(tabla) && gestor.tablaExistente(tablaReferenciada)){
+                    return true;
+                } else{
+                    return false;
+                }
+            }
+            @Override
+            public String ejecutar(GestorAlmacenamiento gestor, List<String> tokens) {
+                String tabla = tokens.get(1); 
+                String campo = tokens.get(3);
+                String nombreConstraint = tokens.get(5);
+                String tipoConstraint = tokens.get(6);
+                String tablaRef = tokens.get(7);
+                String campoRef = tokens.get(9); 
+                gestor.agregar_constraint(tabla, campo, nombreConstraint, tipoConstraint, tablaRef, campoRef); 
+                return "OK: Se altero la tabla.";
+            }
+        },
+        ALTER_CONSTRAINT_UNIQUE{
+            @Override
+            public boolean validarSintaxis(List<String> tokens) {
+                return  tokens.size() >= 7 && 
+                        !tokens.get(0).equalsIgnoreCase("ALTER") &&
+                        !tokens.get(1).isEmpty() &&
+                        tokens.get(2).equalsIgnoreCase(".")&&
+                        !tokens.get(3).isEmpty() &&
+                        !tokens.get(4).equalsIgnoreCase("CONSTRAINT") &&
+                        !tokens.get(5).isEmpty() &&
+                        !tokens.get(6).equalsIgnoreCase("UNIQUE");
+            }
+            @Override
+            public boolean validarSemantica(GestorAlmacenamiento gestor, List<String> tokens) {
+                String tabla = tokens.get(1);
+                if(gestor.tablaExistente(tabla)){
+                    return true;
+                } else{
+                    return false;
+                }
+            }
+            @Override
+            public String ejecutar(GestorAlmacenamiento gestor, List<String> tokens) {
+                String tabla = tokens.get(1); 
+                String campo = tokens.get(3);
+                String nombreConstraint = tokens.get(5);
+                String tipoConstraint = tokens.get(6);
+                gestor.agregar_constraint(tabla, campo, nombreConstraint, tipoConstraint);
+                return "OK: Se altero la tabla.";
+            }
         };
         
         public abstract boolean validarSintaxis(List<String> tokens);
